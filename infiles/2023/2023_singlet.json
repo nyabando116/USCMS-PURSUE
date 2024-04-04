@@ -300,6 +300,10 @@
     "TbarWplus_semilep": [
         "root://cmsxrootd.fnal.gov/Validation error: unmatched dataset pattern"
     ],
-    "TBbar_tchannel": [],
-    "TbarB_tchannel": []
+    "TBbar_tchannel": [
+        "root://cmsxrootd.fnal.gov/Validation error: unmatched dataset pattern"
+    ],
+    "TbarB_tchannel": [
+        "root://cmsxrootd.fnal.gov/Validation error: unmatched dataset pattern"
+    ]
 }

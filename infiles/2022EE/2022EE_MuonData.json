@@ -603,9 +603,17 @@
         "root://cmsxrootd.fnal.gov//store/data/Run2022G/Muon/NANOAOD/22Sep2023-v1/30000/56fac115-461b-4533-8ea1-f2829582d6c7.root"
     ],
     "Muon0_Run2023B": [],
-    "Muon0_Run2023C": [],
-    "Muon0_Run2023D": [],
+    "Muon0_Run2023C-v1": [],
+    "Muon0_Run2023C-v2": [],
+    "Muon0_Run2023C-v3": [],
+    "Muon0_Run2023C-v4": [],
+    "Muon0_Run2023D-v1": [],
+    "Muon0_Run2023D-v2": [],
     "Muon1_Run2023B": [],
-    "Muon1_Run2023C": [],
-    "Muon1_Run2023D": []
+    "Muon1_Run2023C-v1": [],
+    "Muon1_Run2023C-v2": [],
+    "Muon1_Run2023C-v3": [],
+    "Muon1_Run2023C-v4": [],
+    "Muon1_Run2023D-v1": [],
+    "Muon1_Run2023D-v2": []
 }

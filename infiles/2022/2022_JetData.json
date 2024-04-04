@@ -340,9 +340,17 @@
     "JetMET_Run2022F": [],
     "JetMET_Run2022G": [],
     "JetMET0_Run2023B": [],
-    "JetMET0_Run2023C": [],
-    "JetMET0_Run2023D": [],
+    "JetMET0_Run2023C-v1": [],
+    "JetMET0_Run2023C-v2": [],
+    "JetMET0_Run2023C-v3": [],
+    "JetMET0_Run2023C-v4": [],
+    "JetMET0_Run2023D-v1": [],
+    "JetMET0_Run2023D-v2": [],
     "JetMET1_Run2023B": [],
-    "JetMET1_Run2023C": [],
-    "JetMET1_Run2023D": []
+    "JetMET1_Run2023C-v1": [],
+    "JetMET1_Run2023C-v2": [],
+    "JetMET1_Run2023C-v3": [],
+    "JetMET1_Run2023C-v4": [],
+    "JetMET1_Run2023D-v1": [],
+    "JetMET1_Run2023D-v2": []
 }

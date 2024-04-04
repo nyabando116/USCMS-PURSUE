@@ -1,5 +1,5 @@
 {
-    "DYJets_Zto2L": [
+    "DYJets": [
         "root://cmsxrootd.fnal.gov//store/mc/Run3Summer23BPixNanoAODv12/DYto2L-4Jets_MLL-50_1J_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2023_realistic_postBPix_v2-v3/2820000/ee65b8e8-814f-4dda-80f4-04886decd435.root",
         "root://cmsxrootd.fnal.gov//store/mc/Run3Summer23BPixNanoAODv12/DYto2L-4Jets_MLL-50_1J_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2023_realistic_postBPix_v2-v3/2820000/b7a37a3a-789d-4268-9e1b-9dc75a899d3c.root",
         "root://cmsxrootd.fnal.gov//store/mc/Run3Summer23BPixNanoAODv12/DYto2L-4Jets_MLL-50_1J_TuneCP5_13p6TeV_madgraphMLM-pythia8/NANOAODSIM/130X_mcRun3_2023_realistic_postBPix_v2-v3/2820000/bf3421c9-6033-474e-913a-78a64fbe7b3b.root",

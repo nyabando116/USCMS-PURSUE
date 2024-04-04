@@ -740,9 +740,17 @@
         "root://cmsxrootd.fnal.gov//store/data/Run2022G/JetMET/NANOAOD/22Sep2023-v2/2560000/efe688e4-4049-4d7e-b298-9d1a93d7c363.root"
     ],
     "JetMET0_Run2023B": [],
-    "JetMET0_Run2023C": [],
-    "JetMET0_Run2023D": [],
+    "JetMET0_Run2023C-v1": [],
+    "JetMET0_Run2023C-v2": [],
+    "JetMET0_Run2023C-v3": [],
+    "JetMET0_Run2023C-v4": [],
+    "JetMET0_Run2023D-v1": [],
+    "JetMET0_Run2023D-v2": [],
     "JetMET1_Run2023B": [],
-    "JetMET1_Run2023C": [],
-    "JetMET1_Run2023D": []
+    "JetMET1_Run2023C-v1": [],
+    "JetMET1_Run2023C-v2": [],
+    "JetMET1_Run2023C-v3": [],
+    "JetMET1_Run2023C-v4": [],
+    "JetMET1_Run2023D-v1": [],
+    "JetMET1_Run2023D-v2": []
 }
