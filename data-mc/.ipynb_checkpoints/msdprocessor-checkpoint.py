@@ -87,13 +87,7 @@ class msdProcessor(processor.ProcessorABC):
                 n2z2_axis,
                 msoftdropz2_axis,
                 storage=hist.storage.Weight()
-            ), 
-            # "ExampleHistogram6": dah.Hist(
-            #     n2_axis,
-                
-                
-            #second histogram
-            
+            ),   
         }#fill with beta 0, make a second histogram b=1,2,-.5...remove eta if there are memory issues 
         
     def process(self, events):
@@ -133,47 +127,32 @@ class msdProcessor(processor.ProcessorABC):
         n2 = softdrop_zcut10_beta0_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
         jetn2=n2
 
-        #define beta values
-        
-        softdrop_zcut10_beta3 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=-0.5)
-        softdrop_zcut10_beta1 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=1)
-        softdrop_zcut10_beta2 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=2)
+        #define function of n2 here
+        def n2(beta, zcut):
+            softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
+            softdrop_cluster = fastjet.ClusterSequence(softdrop.constituents, jetdef)
+            n2=softdrop_cluster.exclusive_jets_energy_correlator(func="nseries", npoint=2)
+            return n2
 
-        #calculate mass beta value
-        jetmsoftdrop1=softdrop_zcut10_beta1.msoftdrop.compute()
-        jetmsoftdrop2=softdrop_zcut10_beta2.msoftdrop.compute()
-        jetmsoftdrop3=softdrop_zcut10_beta3.msoftdrop.compute()
-        
-        #calculate n2 beta values
-        softdrop_zcut10_beta1_cluster = fastjet.ClusterSequence(softdrop_zcut10_beta1.constituents, jetdef)
-        n2b = softdrop_zcut10_beta1_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2b=n2b
-        
-        softdrop_zcut10_beta2_cluster = fastjet.ClusterSequence(softdrop_zcut10_beta2.constituents, jetdef)
-        n2b2 = softdrop_zcut10_beta2_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2b2=n2b2
-        
-        softdrop_zcut10_beta3_cluster = fastjet.ClusterSequence(softdrop_zcut10_beta3.constituents, jetdef)
-        n2b3 = softdrop_zcut10_beta3_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2b3=n2b3
+        jetn2b = n2(beta=1, zcut=0.1)
+        jetn2b2 = n2(beta=2, zcut=0.1)
+        jetn2b3 = n2(beta=-0.5, zcut=0.1)
 
-        #define zcut values
-        softdrop_zcut5_beta0 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(symmetry_cut=0.05)
-        softdrop_zcut20_beta0 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(symmetry_cut=0.20)
+        jetn2z1 = n2(beta=0, zcut=0.05)
+        jetn2z2 = n2(beta=0, zcut=0.20)
 
-        #msoftdrop zcut
-        jetmsoftdropz1=softdrop_zcut5_beta0.msoftdrop.compute()
-        jetmsoftdropz2=softdrop_zcut20_beta0.msoftdrop.compute()
+       #define function for msoftdrop
+        def msoftdrop(beta, zcut):
+            softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
+            jetmsoftdrop = softdrop.msoftdrop.compute() #delayed?
+            return jetmsoftdrop
+       
+        jetmsoftdropz1 = msoftdrop(beta=0, zcut=0.05)
+        jetmsoftdropz2 = msoftdrop(beta=0, zcut=0.20)
+        jetmsoftdrop1=msoftdrop(beta=1, zcut = 0.10)
+        jetmsoftdrop2=msoftdrop(beta= 2, zcut = 0.10)
+        jetmsoftdrop3=msoftdrop(beta=-0.5, zcut=0.10)
 
-        #n2 zcut
-        softdrop_zcut5_beta0_cluster = fastjet.ClusterSequence(softdrop_zcut5_beta0.constituents, jetdef)
-        n2z1 = softdrop_zcut10_beta2_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2z1=n2z1
-        
-        softdrop_zcut20_beta0_cluster = fastjet.ClusterSequence(softdrop_zcut20_beta0.constituents, jetdef)
-        n2z2 = softdrop_zcut20_beta0_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2z2=n2z2
-        
  
         ################
         # EVENT WEIGHTS
