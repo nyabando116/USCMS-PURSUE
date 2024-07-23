@@ -166,6 +166,8 @@ class msdProcessor(processor.ProcessorABC):
         output = self.make_output()
         output['sumw'] = ak.sum(events.genWeight)
         weights.add('genweight', events.genWeight)
+        print(weights)
+        print(output)
 
         ###################
         # FILL HISTOGRAMS
