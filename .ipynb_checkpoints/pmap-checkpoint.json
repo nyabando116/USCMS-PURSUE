@@ -1,0 +1,120 @@
+{
+    "QCD": [
+        "QCD_HT100to200",
+        "QCD_HT200to400",
+        "QCD_HT400to600",
+        "QCD_HT600to800",
+        "QCD_HT800to1000",
+        "QCD_HT1000to1200",
+        "QCD_HT1200to1500",
+        "QCD_HT1500to2000",
+        "QCD_HT2000toInf"
+    ],
+    "Wjets": [
+        "Wto2Q_HT200to400",
+        "Wto2Q_HT400to600",
+        "Wto2Q_HT600to800",
+        "Wto2Q_HT800toInf",
+        "WtoLNu"
+    ],
+    "Zjets": [
+        "DYJets",
+        "Zto2Nu_HT100to200",
+        "Zto2Nu_HT200to400",
+        "Zto2Nu_HT400to800",
+        "Zto2Nu_HT800to1500",
+        "Zto2Nu_HT1500to2500",
+        "Zto2Nu_HT2500toInf",
+        "Zto2Q_HT200to400",
+        "Zto2Q_HT400to600",
+        "Zto2Q_HT600to800",
+        "Zto2Q_HT800toInf"
+    ],
+    "VV": [
+        "WW",
+        "WZ",
+        "ZZ"
+    ],
+    "ttbar": [
+        "TTto4Q",
+        "TTto2L2Nu",
+        "TTtoLNu2Q"
+    ],
+    "singlet": [
+        "TWminus_fullhad",
+        "TbarWplus_fullhad",
+        "TWminus_fulllep",
+        "TbarWplus_fulllep",
+        "TWminus_semilep",
+        "TbarWplus_semilep",
+        "TBbar_tchannel",
+        "TbarB_tchannel"
+    ],
+    "ggF": [
+        "GluGlu_Hto2B"
+    ],
+    "VBF": [
+        "VBF_Hto2B"
+    ],
+    "WH": [
+        "WminusH_Hto2B_Wto2Q",
+        "WplusH_Hto2B_Wto2Q",
+        "WminusH_Hto2B_WtoLNu",
+        "WplusH_Hto2B_WtoLNu"
+    ],
+    "ZH": [
+        "ZH_Hto2B_Zto2Q",
+        "ZH_Hto2B_Zto2L",
+        "ZH_Hto2B_Zto2Nu",
+        "ggZH_Hto2B_Zto2Q",
+        "ggZH_Hto2B_Zto2L",
+        "ggZH_Hto2B_Zto2Nu"
+    ],
+    "ttH": [
+        "ttH_Hto2B"
+    ],
+    "JetData": [
+        "JetHT_Run2022C",
+        "JetMET_Run2022C",
+        "JetMET_Run2022D",
+        "JetMET_Run2022E",
+        "JetMET_Run2022F",
+        "JetMET_Run2022G",
+        "JetMET0_Run2023B",
+        "JetMET0_Run2023C-v1",
+        "JetMET0_Run2023C-v2",
+        "JetMET0_Run2023C-v3",
+        "JetMET0_Run2023C-v4",
+        "JetMET0_Run2023D-v1",
+        "JetMET0_Run2023D-v2",
+        "JetMET1_Run2023B",
+        "JetMET1_Run2023C-v1",
+        "JetMET1_Run2023C-v2",
+        "JetMET1_Run2023C-v3",
+        "JetMET1_Run2023C-v4",
+        "JetMET1_Run2023D-v1",
+        "JetMET1_Run2023D-v2"
+    ],
+    "MuonData": [
+        "SingleMuon_Run2022C",
+        "Muon_Run2022C",
+        "Muon_Run2022D",
+        "Muon_Run2022E",
+        "Muon_Run2022F",
+        "Muon_Run2022G",
+        "Muon0_Run2023B",
+        "Muon0_Run2023C-v1",
+        "Muon0_Run2023C-v2",
+        "Muon0_Run2023C-v3",
+        "Muon0_Run2023C-v4",
+        "Muon0_Run2023D-v1",
+        "Muon0_Run2023D-v2",
+        "Muon1_Run2023B",
+        "Muon1_Run2023C-v1",
+        "Muon1_Run2023C-v2",
+        "Muon1_Run2023C-v3",
+        "Muon1_Run2023C-v4",
+        "Muon1_Run2023D-v1",
+        "Muon1_Run2023D-v2"
+    ]
+}

@@ -35,7 +35,7 @@ class msdProcessor(processor.ProcessorABC):
         msoftdrop_axis = hist.axis.Regular(36, 0, 252, name="msoftdrop", label=r"Jet msoftdrop")
         n2_axis = hist.axis.Regular(10, 0, 1, name="n2", label=r"Jet n2")
 
-        #n2 axes beta
+        # #n2 axes beta
         n2b_axis = hist.axis.Regular(10, 0, 1, name="n2b", label=r"Jet n2b")
         n2b2_axis = hist.axis.Regular(10, 0, 1, name="n2b2", label=r"Jet n2b2")
         n2b3_axis = hist.axis.Regular(10, 0, 1, name="n2b3", label=r"Jet n2b3")
@@ -100,18 +100,34 @@ class msdProcessor(processor.ProcessorABC):
 
         # For soft drop studies we care about the AK8 jets
         fatjets = events.FatJet
+
+        fj_cut = (fatjets.pt > 450) & (abs(fatjets.eta) < 2.5)
         
-        candidatejet = fatjets[(fatjets.pt > 450)
-                               & (abs(fatjets.eta) < 2.5)
-                               #& fatjets.isTight
-                               ]
+        candidatejet = fatjets[fj_cut]
 
         # Let's use only one jet
         leadingjets = candidatejet[:, 0:1]
+        one_leading_jet = (ak.num(leadingjets, axis=1) == 1)
+        leadingjets = leadingjets[one_leading_jet]
 
-        jetpt = ak.firsts(leadingjets.pt)   
+        select_events = (one_leading_jet) & (ak.any(fj_cut, axis=1))
+        
+        jetpt = ak.firsts(leadingjets.pt)
         jeteta = ak.firsts(leadingjets.eta)
         jetmsoftdrop= ak.firsts(leadingjets.msoftdrop)
+        
+        #print(f"Printing {dask_awkward.num(jetpt, axis=0).compute() = }" )
+        #print(f"{dask_awkward.num(jeteta, axis=0).compute() = }")
+        #print(f"{dask_awkward.num(jetmsoftdrop, axis=0).compute() = }" )
+
+        #trying to filter out None values
+        # valid_mask = ~ak.is_none(jetpt)
+
+        # jetpt = jetpt[valid_mask]
+        # jeteta = jeteta[valid_mask]
+        # jetmsoftdrop = jetmsoftdrop[valid_mask]
+
+        #end of edit
 
         jetdef = fastjet.JetDefinition(
         fastjet.cambridge_algorithm, 0.8
@@ -125,9 +141,10 @@ class msdProcessor(processor.ProcessorABC):
         # # Ruva can calculate the variables we care about here
         softdrop_zcut10_beta0_cluster = fastjet.ClusterSequence(softdrop_zcut10_beta0.constituents, jetdef)
         n2 = softdrop_zcut10_beta0_cluster.exclusive_jets_energy_correlator(func="nseries", npoint = 2)
-        jetn2=n2
+        jetn2= n2
+        # print(dask_awkward.num(jetn2, axis=0).compute())
 
-        #define function of n2 here
+        # define function of n2 here
         def n2(beta, zcut):
             softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
             softdrop_cluster = fastjet.ClusterSequence(softdrop.constituents, jetdef)
@@ -144,7 +161,7 @@ class msdProcessor(processor.ProcessorABC):
        #define function for msoftdrop
         def msoftdrop(beta, zcut):
             softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
-            jetmsoftdrop = softdrop.msoftdrop.compute() #delayed?
+            jetmsoftdrop = softdrop.msoftdrop #.compute() 
             return jetmsoftdrop
        
         jetmsoftdropz1 = msoftdrop(beta=0, zcut=0.05)
@@ -165,48 +182,66 @@ class msdProcessor(processor.ProcessorABC):
         weights = Weights(size=None, storeIndividual=True)
         output = self.make_output()
         output['sumw'] = ak.sum(events.genWeight)
-        weights.add('genweight', events.genWeight)
+        weights.add('genweight', events.genWeight[select_events])
+        # print("Printing weights.visualize() = }" )
+        # print("Printing weights.compute() = }" )
 
+        #edit
+        # jet_mask = ~ak.is_none(jetpt)
+        
+      
         ###################
         # FILL HISTOGRAMS
         ###################
-        def normalize(val, cut = None):
-            if cut is None:
+        def normalize(val, cut = None): #~ak.is_none(jetpt)):
+            if cut is not None:
                 ar = ak.flatten(val,axis=0)
+                # ar = val
                 return ar
             else:
-                ar = ak.flatten(val)
-                return ar 
-     
+                 ar = ak.flatten(val, axis=0)
+                 return ar 
+        # output['ExampleHistogram'].fill(pt=normalize(jetpt),
+        #                                 eta=normalize(jeteta),
+        #                                 msoftdrop=normalize(jetmsoftdrop),
+        #                                 n2=normalize(jetn2),
+        #                                 weight=weights.weight()
+        #                                ),
 
-        output['ExampleHistogram'].fill(pt=normalize(jetpt),
-                                        eta=normalize(jeteta),
-                                        msoftdrop=normalize(jetmsoftdrop),
-                                        n2=normalize(jetn2),
-                                        # weight=weights
-                                        weight=weights.weight()[jetpt is not None]
-                                        ),
+    
+        # return output
+        #import dask
+        #print(dask.compute(jetpt, jeteta, jetmsoftdrop, jetn2, weights.weight()))
         
-        output['ExampleHistogram1'].fill(n2b=normalize(jetn2b),
-                                         msoftdrop1=normalize(jetmsoftdrop1),
+        
+        output['ExampleHistogram'].fill(pt=jetpt,
+                                        eta=jeteta,
+                                        msoftdrop=jetmsoftdrop,
+                                        n2=jetn2,
+                                        # weight=weights
+                                        weight=weights.weight()
+                                       )
+        
+        output['ExampleHistogram1'].fill(n2b=jetn2b,
+                                         msoftdrop1=jetmsoftdrop1,
                                          # weight=weights
-                                         weight=weights.weight()[jetpt is not None]
-                                  ),
-        output['ExampleHistogram2'].fill(n2b2=normalize(jetn2b2),
-                                         msoftdrop2=normalize(jetmsoftdrop2),
-                                         weight=weights.weight()[jetpt is not None]
-                                        ),
-        output['ExampleHistogram3'].fill(n2b3=normalize(jetn2b3),
-                                         msoftdrop3=normalize(jetmsoftdrop3),
-                                         weight=weights.weight()[jetpt is not None]
-                                        ),
-        output['ExampleHistogram4'].fill(n2z1=normalize(jetn2z1),
-                                         msoftdropz1=normalize(jetmsoftdropz1),
-                                         weight=weights.weight()[jetpt is not None]
-                                        ),
-        output['ExampleHistogram5'].fill(n2z2=normalize(jetn2z2),
-                                         msoftdropz2=normalize(jetmsoftdropz2),
-                                         weight=weights.weight()[jetpt is not None]
+                                         weight=weights.weight()
+                                  )
+        output['ExampleHistogram2'].fill(n2b2=jetn2b2,
+                                         msoftdrop2=jetmsoftdrop2,
+                                         weight=weights.weight()
+                                        )
+        output['ExampleHistogram3'].fill(n2b3=jetn2b3,
+                                         msoftdrop3=jetmsoftdrop3,
+                                         weight=weights.weight()
+                                        )
+        output['ExampleHistogram4'].fill(n2z1=jetn2z1,
+                                         msoftdropz1=jetmsoftdropz1,
+                                         weight=weights.weight()
+                                        )
+        output['ExampleHistogram5'].fill(n2z2=jetn2z2,
+                                         msoftdropz2=jetmsoftdropz2,
+                                         weight=weights.weight()
                                         )
     
         return output
