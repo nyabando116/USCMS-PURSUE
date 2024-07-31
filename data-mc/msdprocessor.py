@@ -182,7 +182,7 @@ class msdProcessor(processor.ProcessorABC):
         # weights = Weights(dask_awkward.num(events, axis=0).compute())
         weights = Weights(size=None, storeIndividual=True)
         output = self.make_output()
-        output['sumw'] = ak.sum(events.genWeight)
+        output['sumw'] = ak.sum(events.genWeight[select_events])
         weights.add('genweight', events.genWeight[select_events])
         # print("Printing weights.visualize() = }" )
         # print("Printing weights.compute() = }" )
