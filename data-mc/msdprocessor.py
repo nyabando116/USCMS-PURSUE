@@ -114,7 +114,7 @@ class msdProcessor(processor.ProcessorABC):
         
         jetpt = ak.firsts(leadingjets.pt)
         jeteta = ak.firsts(leadingjets.eta)
-        jetmsoftdrop= ak.firsts(leadingjets.msoftdrop)
+        #jetmsoftdrop= ak.firsts(leadingjets.msoftdrop)
         
         #print(f"Printing {dask_awkward.num(jetpt, axis=0).compute() = }" )
         #print(f"{dask_awkward.num(jeteta, axis=0).compute() = }")
@@ -163,7 +163,8 @@ class msdProcessor(processor.ProcessorABC):
             softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
             jetmsoftdrop = softdrop.msoftdrop #.compute() 
             return jetmsoftdrop
-       
+
+        jetmsoftdrop = msoftdrop(beta=0, zcut=0.05)
         jetmsoftdropz1 = msoftdrop(beta=0, zcut=0.05)
         jetmsoftdropz2 = msoftdrop(beta=0, zcut=0.20)
         jetmsoftdrop1=msoftdrop(beta=1, zcut = 0.10)
