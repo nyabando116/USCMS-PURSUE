@@ -164,7 +164,7 @@ class msdProcessor(processor.ProcessorABC):
             jetmsoftdrop = softdrop.msoftdrop #.compute() 
             return jetmsoftdrop
 
-        jetmsoftdrop = msoftdrop(beta=0)
+        jetmsoftdrop = msoftdrop(beta=0, zcut = 0.10)
         jetmsoftdropz1 = msoftdrop(beta=0, zcut=0.05)
         jetmsoftdropz2 = msoftdrop(beta=0, zcut=0.20)
         jetmsoftdrop1=msoftdrop(beta=1, zcut = 0.10)
