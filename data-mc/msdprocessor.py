@@ -18,6 +18,7 @@ import fastjet
 import dask_awkward
 import hist.dask as dah
 import hist
+import dask
 
 # Look at ProcessorABC to see the expected methods and what they are supposed to do
 class msdProcessor(processor.ProcessorABC):
@@ -27,15 +28,15 @@ class msdProcessor(processor.ProcessorABC):
         ################################
             
         # Some examples of axes
-        pt_axis = hist.axis.Regular(15, 450, 1200, name="pt", label=r"Jet $p_{T}$ [GeV]")
-        eta_axis = hist.axis.Regular(12, -6, 6, name="eta", label=r"Jet eta")
+        # pt_axis = hist.axis.Regular(15, 450, 1200, name="pt", label=r"Jet $p_{T}$ [GeV]")
+        # eta_axis = hist.axis.Regular(12, -6, 6, name="eta", label=r"Jet eta")
 
         # Ruva can make her own axes
         ## here
         msoftdrop_axis = hist.axis.Regular(36, 0, 252, name="msoftdrop", label=r"Jet msoftdrop")
         n2_axis = hist.axis.Regular(10, 0, 1, name="n2", label=r"Jet n2")
 
-        # #n2 axes beta
+        #n2 axes beta
         n2b_axis = hist.axis.Regular(10, 0, 1, name="n2b", label=r"Jet n2b")
         n2b2_axis = hist.axis.Regular(10, 0, 1, name="n2b2", label=r"Jet n2b2")
         n2b3_axis = hist.axis.Regular(10, 0, 1, name="n2b3", label=r"Jet n2b3")
@@ -57,8 +58,8 @@ class msdProcessor(processor.ProcessorABC):
         self.make_output = lambda: { 
             # Test histogram; not needed for final analysis but useful to check things are working
             "ExampleHistogram": dah.Hist(
-                pt_axis,
-                eta_axis,
+                # pt_axis,
+                # eta_axis,
                 msoftdrop_axis,
                 n2_axis,
                 storage=hist.storage.Weight()
@@ -100,9 +101,7 @@ class msdProcessor(processor.ProcessorABC):
 
         # For soft drop studies we care about the AK8 jets
         fatjets = events.FatJet
-
         fj_cut = (fatjets.pt > 450) & (abs(fatjets.eta) < 2.5)
-        
         candidatejet = fatjets[fj_cut]
 
         # Let's use only one jet
@@ -114,28 +113,17 @@ class msdProcessor(processor.ProcessorABC):
         
         jetpt = ak.firsts(leadingjets.pt)
         jeteta = ak.firsts(leadingjets.eta)
-        jetmsoftdrop= ak.firsts(leadingjets.msoftdrop)
+        testmass=(leadingjets.subjets * (1 - leadingjets.subjets.rawFactor)).sum()
+        jetmsoftdrop=ak.flatten(testmass.mass)
         
-        #print(f"Printing {dask_awkward.num(jetpt, axis=0).compute() = }" )
-        #print(f"{dask_awkward.num(jeteta, axis=0).compute() = }")
-        #print(f"{dask_awkward.num(jetmsoftdrop, axis=0).compute() = }" )
-
-        #trying to filter out None values
-        # valid_mask = ~ak.is_none(jetpt)
-
-        # jetpt = jetpt[valid_mask]
-        # jeteta = jeteta[valid_mask]
-        # jetmsoftdrop = jetmsoftdrop[valid_mask]
-
-        #end of edit
-
-        jetdef = fastjet.JetDefinition(
+        
+        jetdef =fastjet.JetDefinition(
         fastjet.cambridge_algorithm, 0.8
         )
 
         pf = ak.flatten(leadingjets.constituents.pf, axis=1)
         
-        # cluster = fastjet.ClusterSequence(pf, jetdef)
+        cluster = fastjet.ClusterSequence(pf, jetdef)
         softdrop_zcut10_beta0 = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=0)
 
         # # Ruva can calculate the variables we care about here
@@ -145,6 +133,7 @@ class msdProcessor(processor.ProcessorABC):
         # print(dask_awkward.num(jetn2, axis=0).compute())
 
         # define function of n2 here
+        # @dask.delayed
         def n2(beta, zcut):
             softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
             softdrop_cluster = fastjet.ClusterSequence(softdrop.constituents, jetdef)
@@ -158,12 +147,14 @@ class msdProcessor(processor.ProcessorABC):
         jetn2z1 = n2(beta=0, zcut=0.05)
         jetn2z2 = n2(beta=0, zcut=0.20)
 
-       #define function for msoftdrop
+       # define function for msoftdrop
+        # @dask.delayed
         def msoftdrop(beta, zcut):
             softdrop = fastjet.ClusterSequence(pf, jetdef).exclusive_jets_softdrop_grooming(beta=beta, symmetry_cut=zcut)
             jetmsoftdrop = softdrop.msoftdrop #.compute() 
             return jetmsoftdrop
-       
+
+        jetmsoftdrop = msoftdrop(beta=0, zcut = 0.10)
         jetmsoftdropz1 = msoftdrop(beta=0, zcut=0.05)
         jetmsoftdropz2 = msoftdrop(beta=0, zcut=0.20)
         jetmsoftdrop1=msoftdrop(beta=1, zcut = 0.10)
@@ -181,7 +172,7 @@ class msdProcessor(processor.ProcessorABC):
         # weights = Weights(dask_awkward.num(events, axis=0).compute())
         weights = Weights(size=None, storeIndividual=True)
         output = self.make_output()
-        output['sumw'] = ak.sum(events.genWeight)
+        output['sumw'] = ak.sum(events.genWeight[select_events])
         weights.add('genweight', events.genWeight[select_events])
         # print("Printing weights.visualize() = }" )
         # print("Printing weights.compute() = }" )
@@ -193,14 +184,14 @@ class msdProcessor(processor.ProcessorABC):
         ###################
         # FILL HISTOGRAMS
         ###################
-        def normalize(val, cut = None): #~ak.is_none(jetpt)):
-            if cut is not None:
-                ar = ak.flatten(val,axis=0)
-                # ar = val
-                return ar
-            else:
-                 ar = ak.flatten(val, axis=0)
-                 return ar 
+        # def normalize(val, cut = None): #~ak.is_none(jetpt)):
+        #     if cut is not None:
+        #         ar = ak.flatten(val,axis=0)
+        #         # ar = val
+        #         return ar
+        #     else:
+        #          ar = ak.flatten(val, axis=0)
+        #          return ar 
         # output['ExampleHistogram'].fill(pt=normalize(jetpt),
         #                                 eta=normalize(jeteta),
         #                                 msoftdrop=normalize(jetmsoftdrop),
@@ -214,9 +205,7 @@ class msdProcessor(processor.ProcessorABC):
         #print(dask.compute(jetpt, jeteta, jetmsoftdrop, jetn2, weights.weight()))
         
         
-        output['ExampleHistogram'].fill(pt=jetpt,
-                                        eta=jeteta,
-                                        msoftdrop=jetmsoftdrop,
+        output['ExampleHistogram'].fill(msoftdrop=jetmsoftdrop,
                                         n2=jetn2,
                                         # weight=weights
                                         weight=weights.weight()

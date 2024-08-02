@@ -1,0 +1,129 @@
+{
+    "QCD": [
+        "QCD_PT300to470",
+        "QCD_PT470to600",
+        "QCD_PT600to800",
+        "QCD_PT800to1000",
+        "QCD_PT1000to1400",
+        "QCD_PT1400to1800",
+        "QCD_PT1800to2400",
+        "QCD_PT2400to3200",
+        "QCD_PT3200toInf"
+    ],
+    "ttbar": [
+        "TTTo2L2Nu",
+        "TTToHadronic",
+        "TTToSemiLeptonic"
+    ],
+    "ttbarBoosted": [
+        "TT_MTT700To1000",
+        "TT_MTT1000ToInf"
+    ],
+    "singlet": [
+        "ST_t-channel_antitop",
+        "ST_t-channel_top",
+        "ST_tW_antitop",
+        "ST_tW_top"
+    ],
+    "Wjets": [
+        "WJetsToQQ_HT400to600",
+        "WJetsToQQ_HT600to800",
+        "WJetsToQQ_HT800toInf",
+        "WJetsToLNu_HT200to400",
+        "WJetsToLNu_HT400to600",
+        "WJetsToLNu_HT600to800",
+        "WJetsToLNu_HT800to1200",
+        "WJetsToLNu_HT1200to2500",
+        "WJetsToLNu_HT2500toInf"
+    ],
+    "Zjets": [
+        "ZJetsToQQ_HT400to600",
+        "ZJetsToQQ_HT600to800",
+        "ZJetsToQQ_HT800toInf",
+        "DYJetsToLL_HT200to400",
+        "DYJetsToLL_HT400to600",
+        "DYJetsToLL_HT600to800",
+        "DYJetsToLL_HT800to1200",
+        "DYJetsToLL_HT1200to2500",
+        "DYJetsToLL_HT2500toInf"
+    ],
+    "VV": [
+        "WW",
+        "ZZ",
+        "WZ"
+    ],
+    "EWKZ": [
+        "EWKZ_ZToQQ",
+        "EWKZ_ZToLL",
+        "EWKZ_ZToNuNu"
+    ],
+    "EWKW": [
+        "EWKWminus_WToQQ",
+        "EWKWplus_WToQQ",
+        "EWKWminus_WToLNu",
+        "EWKWplus_WToLNu"
+    ],
+    "ggF": [
+        "GluGluHToBB"
+    ],
+    "VBF": [
+        "VBFHToBB"
+    ],
+    "WH": [
+        "WminusH_HToBB_WToQQ",
+        "WplusH_HToBB_WToQQ",
+        "WminusH_HToBB_WToLNu",
+        "WplusH_HToBB_WToLNu"
+    ],
+    "ZH": [
+        "ZH_HToBB_ZToQQ",
+        "ZH_HToBB_ZToLL",
+        "ZH_HToBB_ZToNuNu",
+        "ggZH_HToBB_ZToQQ",
+        "ggZH_HToBB_ZToLL",
+        "ggZH_HToBB_ZToNuNu"
+    ],
+    "ttH": [
+        "ttHToBB"
+    ],
+    "data": [
+        "JetHT_Run2016B_ver1_HIPM",
+        "JetHT_Run2016B_ver2_HIPM",
+        "JetHT_Run2016C_HIPM",
+        "JetHT_Run2016D_HIPM",
+        "JetHT_Run2016E_HIPM",
+        "JetHT_Run2016F_HIPM",
+        "JetHT_Run2016F",
+        "JetHT_Run2016G",
+        "JetHT_Run2016H",
+        "JetHT_Run2017B",
+        "JetHT_Run2017C",
+        "JetHT_Run2017D",
+        "JetHT_Run2017E",
+        "JetHT_Run2017F",
+        "JetHT_Run2018A",
+        "JetHT_Run2018B",
+        "JetHT_Run2018C",
+        "JetHT_Run2018D"
+    ],
+    "muondata": [
+        "SingleMuon_Run2016B_ver1_HIPM",
+        "SingleMuon_Run2016B_ver2_HIPM",
+        "SingleMuon_Run2016C_HIPM",
+        "SingleMuon_Run2016D_HIPM",
+        "SingleMuon_Run2016E_HIPM",
+        "SingleMuon_Run2016F_HIPM",
+        "SingleMuon_Run2016F",
+        "SingleMuon_Run2016G",
+        "SingleMuon_Run2016H",
+        "SingleMuon_Run2017B",
+        "SingleMuon_Run2017C",
+        "SingleMuon_Run2017D",
+        "SingleMuon_Run2017E",
+        "SingleMuon_Run2017F",
+        "SingleMuon_Run2018A",
+        "SingleMuon_Run2018B",
+        "SingleMuon_Run2018C",
+        "SingleMuon_Run2018D"
+    ]
+}
